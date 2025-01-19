@@ -18,8 +18,22 @@ const cartSchema = new Schema({
         required: true,
         min: 1,
       },
+      price: {
+        type: Number,
+        required: false,
+        default : 0
+      },
     },
   ],
+  subtotal: { 
+      type: Number, 
+      required: false,
+      default : 0
+  },
+  total: { 
+      type: Number, 
+      required: false 
+  },
   createdAt: {
     type: Date,
     default: Date.now,
