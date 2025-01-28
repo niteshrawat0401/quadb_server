@@ -12,7 +12,7 @@ const addNewProduct = async(req, res)=>{
 }
 const getProduct = async(req, res)=>{
     try {
-        const products = await Product.find();
+        const products = await Product.find({productStatus: true});
         res.status(200).json(products);
       } catch (error) {
         res.status(500).json({ message: 'Error fetching products', error });
@@ -56,6 +56,27 @@ const updateProduct = async(req, res)=>{
       } catch (error) {
         res.status(400).json({ message: 'Error updating the product', error });
       }
+}
+
+
+const productStatus = async(req, res)=>{
+  const {id} = req.params;
+  try {
+    const productFind = await Product.findById({_id: id});
+    if(productFind?.productStatus){
+      await Product.updateOne({_id: productFind?._id},{ productStatus: false} ,{new: true})
+      let productsStatus = await Product.find({productStatus: false})
+      return res.status(200).json({msg: "update status", productsStatus})
+    }
+    else{
+      await Product.updateOne({_id: productFind?._id},{ productStatus: true} ,{new: true})
+      let productsStatus = await Product.find({productStatus: true})
+      return res.status(200).json({msg: "update status", productsStatus})
+    }
+    
+  } catch (error) {
+    return res.status(500).json({msg: "Server error", error: error.msg})
+  }
 }
 
 
@@ -192,6 +213,7 @@ module.exports = {
     getSingleProduct,
     deleteProduct,
     updateProduct,
+    productStatus,
     addToCart,
     getCartData,
     updateCart,

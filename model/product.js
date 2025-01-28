@@ -34,6 +34,10 @@ const productSchema = new Schema({
   additionalInfo: {
     type: [String],
   },
+  productStatus: {
+    type : Boolean,
+    default: true
+  },
   createdAt: {
     type: Date,
     default: Date.now,
